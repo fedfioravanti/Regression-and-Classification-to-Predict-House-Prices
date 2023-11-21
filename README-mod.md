@@ -45,7 +45,8 @@ The goals of this project is to create several models     which can determine th
 
 ## Data Collection
 
-The data used in this project  
+The data used in this project comes from the [Ames Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques) made available on Kaggle.  
+The dataset consists of about 1,400 properties and 80 features.  
 
 .
 The raw data retrieved from the last scrape - the most fruitful - consisted of almost 240,000 job listings each containing 8 features.  
