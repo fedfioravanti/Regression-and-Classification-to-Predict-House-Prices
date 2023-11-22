@@ -30,15 +30,27 @@ This document explains the background, the objectives, the methodologies, the co
 
 ## Background
 
-Data-related positions are in high demand, and salaries for these positions can vary widely depending on a number of factors, such as the specific job title, the company, the location, and the experience level of the candidate. This can make it difficult for job seekers to know what to expect in terms of salary.  
+The application of data science techniques to the built environment could unlock extremely interesting opportunities in the real estate industry, improving the efficiency of companies operating in a traditionally 'old school' sector.  
+By focusing on the residential segment, a model that reliably predicts house prices based on fixed or variable characteristics can be a powerful tool for real estate professionals, landlords and homebuyers.  
 
-A model to predict job salaries for data-related positions can be a useful tool for both job seekers and employers. For job seekers, it can help them to set realistic salary expectations and to identify opportunities that are a good match for their skills and experience. For employers, it can help them to benchmark their salaries against the market and to ensure that they are offering competitive salaries to attract and retain top talent.  
+The business case for the project is a new "full stack" real estate company interested in using data science to determine the best properties to buy and re-sell, whose strategy is two-fold:
+* Own the entire process from the purchase of the land all the way to sale of the house, and anything in between.
+* Use statistical analysis to optimize investment and maximize return.
+
+This imaginary company is still small, and although investment is substantial the short-term goals of the company are more oriented towards purchasing existing houses and flipping them as opposed to constructing entirely new houses.  
+
 
 <br/><br/>
 
 ## Objectives
 
-The goals of this project is to create several models     which can determine the industry factors that are most important in predicting the salary amounts for data-related positions.
+The goal of this project is to build different models that can:
+1. Estimate house values based on fixed characteristics
+2. Estimate house values based on changeable characteristics
+3. Estimate house values based on changeable characteristics unexplained by the fixed ones
+4. Determine what property features predict an "abnormal" sale
+
+This way, the company can use this information to purchase homes that are likely to sell for more than the purchase cost plus the renovation cost.  
 
 <br/><br/>
 
@@ -46,24 +58,25 @@ The goals of this project is to create several models     which can determine th
 ## Data Collection
 
 The data used in this project comes from the [Ames Housing dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques) made available on Kaggle.  
-The dataset consists of about 1,400 properties and 80 features.  
-
-.
-The raw data retrieved from the last scrape - the most fruitful - consisted of almost 240,000 job listings each containing 8 features.  
+The dataset contains real estate transactions in the city of Ames, Iowa, from January 2006 to July 2010 and consists of 1,460 properties across 80 characteristics.    
 
 <br/><br/>
 
 
 ## Data Cleaning & Processing
 
-After removing duplicates and filtering out entries without monthly or annual salaries, the resulting sample contained approximately 13,400 job listings.  
-As part of feature engineering, I created attributes related to the work arrangement (hybrid, remote and on-site) and the number of additional locations; the company location data was inconsistent, so I also extracted the company state and city and used them later for the EDA and modelling stage.  
+After building a data dictionary that includes description, mutability and variable type for all features, I checked for repetitions in related features and removed non-residential properties and features with very low variability from the dataset.  
+As part of feature engineering, I created attributes related to the total area of the property, the lot open area, the floor area ratio, the total number of bathroom and the age of the property.  
 All work was done in Python on Jupyter notebooks, and the processing revolved around:
 
 * Identifying variables relevant to modelling, and which ones to drop.
 * Exploring opportunities for new feature creation.
 * Looking for erroneous or missing data.
+* Imputing missing values where possible.
+* Performing ordinal encoding where categorical variables where incorrectly designated.
 * Creating the target variable.  
+
+The resulting dataset consisted of 1,441 properties across 82 characteristics.  
 
 <br/><br/>
 
@@ -71,30 +84,41 @@ All work was done in Python on Jupyter notebooks, and the processing revolved ar
 ## Exploratory Data Analysis
   
   
-![alt text](./images/01_salary_histp.png "Salary Distribution")
-![alt text](./images/02_jobtitle_barp.png "Job Title Distribution")
+![alt text](./images/01_saleprice_full_histp.png "Sale Price Distribution - Full Dataset")
+![alt text](./images/02_saleprice_full_boxp.png "Sale Price Summary - Full Dataset")
 
-Initial EDA showed that salary has a typical right skewed distribution with the median equal to $114,500.  
-The most common job titles are Senior Data Engineer and Senior Software Engineer, but the majority (~61%) of the job titles in the dataset are unique.  
+Initial EDA showed that sale price has a typical right skewed distribution with the median equals to $163,000.  
+The boxplot shows several outliers towards the right end: the minimum sale price is equal to $37,900 while the most expensive property has been sold for $755,000.  
 
-![alt text](./images/07_leadership_median_barp.png "Median Salary Distribution by Leadership Position")
+![alt text](./images/04_saleprice_histp.png "Sale Price Distribution - Optimised Dataset")
+![alt text](./images/05_saleprice_boxp.png "Sale Price Summary - Optimised Dataset")
 
-Leadership positions with the highest median salary (equal to $225,000) are those containing the word head, which are also the rarest, while those related to manager show the lowest median salary (equal to $107,500) which is less than the median salary for all roles.  
-The black dotted line represents the median salary for all roles in the main dataset, which is equal to $114,500.  
+I removed the outliers from the dataset to help normalise the sale price distribution.  
+The right tail in the histogram has decreased significantly, and skewness and kurtosis have also been substantially reduced.  
+The new median sale price is equal to $159,500 and the mean is equal to $170,516, the minimum has remained unchanged at $37,900 while the most expensive property is equal to $339,750.  
 
-![alt text](./images/11_company_city_barp.png "Company City Distribution")
-![alt text](./images/12_company_city_median_barp.png "Median Salary Distribution by City")
+![alt text](./images/07_continuous_boxp.png "Summary of Continuous Variables")
 
-The cities with the most job listings are New York City, Denver and Austin, and those with the highest median salary are Overland Park (KS), Santa Clara (CA) and Mountain View (CA), which are also the only ones exceeding $150,000.  
+Most continuous variables shows a strong positive skewness, which is not surprising given that the dataset concerns the real estate sector.  
+Correlation and multicollinearity have been verified separately for fixed and mutable features.
 
-![alt text](./images/13_company_state_barp.png "Company State Distribution")
-![alt text](./images/14_company_state_median_barp.png "Median Salary Distribution by State")
+![alt text](./images/16_neighbourhood_barp.png "Median Sale Price Distribution by Neighbourhood")
 
-The states with the most job listings are New York, California and Colorado, and those with the highest median salary are Delaware, New York, Kansas and California.  
+The most expensive neighbourhoods are Northridge, Northridge Heights and Stone Brook, and the median sale price in the first two exceeds $250,000.  
+This figure is more than three times higher than that found in the poorest neighbourhood, Meadow Village.  
 
-![alt text](./images/17_work_arrangement_histp.png "Salary Distribution by Work Arrangement")
+![alt text](./images/19_overallqual_barp.png "Overall Quality and Overall Condition")
+![alt text](./images/20_yearbuilt_scatterp.png "Construction Year by Overall Quality)
 
-On-site listings are the most frequent in the dataset while hybrid listings are the smallest subset; remote positions have the highest mean and median salary while hybrid ones have the lowest.  
+Unsurprisingly, there is a clear direct relationship between the overall quality, overall condition, construction year and the sale price of the properties.  
+
+![alt text](./images/25_totalsfabvgrd_scatterp.png "Total Area Above Ground by Total Rooms Above Ground")
+![alt text](./images/31_garagearea_scatterp.png "Garage Area by Garage Type")
+
+Unsurprisingly, there is a clear direct relationship between the total area above ground, the garage area and the sale price of the properties.  
+
+Before the modelling phase I removed the features among those with greater multicollinearity.  
+When addressing feature selection, I also considered the correlation with sale price, precision, internal variability and overlaps between different variables.  
 
 <br/><br/>
 
@@ -171,7 +195,7 @@ To further improve the current work, the following steps should be taken:
 * Seaborn
 * Scikit-Learn  
 * XGBoost  
-* Imblearn
+* Imbalanced-Learn
 
 
 <br/><br/>
