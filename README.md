@@ -21,7 +21,6 @@ This document explains the background, the objectives, the methodologies, the co
 [Modelling](#Modelling)  
 [Limitations](#Limitations)  
 [Conclusion](#Conclusion)  
-[Future Work](#Future-Work)  
 [Libraries Used](#Libraries-Used)  
 [Contact](#Contact)  
 
@@ -149,29 +148,67 @@ Part A, B and C are regression problems, and four different models have been imp
 * Ridge Regression with RidgeCV
 * Elastic Net Regression with ElasticNetCV  
 
-Part D is a classification problem
+Part D is a classification problem, and ten different models have been initially tested:
+* Logistic Regression  
+* K-Nearest Neighbours Classifier  
+* Decision Tree Classifier  
+* Random Forest Classifier  
+* Extra Trees Classifier  
+* Support Vector Machine Classifier
+* AdaBoost Classifier
+* Gradient Boosting Classifier
+* XGBoost Classifier
+* MLP Classifier 
+
+<br/><br/>
+
+The best model for predicting house prices based on fixed characteristics (**Part A**) is **Lasso Regression**, with a CV score of 0.7693 and a test score of 0.8516.  
+According to this model, the following features have the largest impact on the sale price:
+* The neighbourhood *Northridge Heights* will increase the value by approximately $34,600
+* The neighbourhood *Northridge* will increase the value by approximately $33,200
+* The neighbourhood *Stone Brook* will increase the value by approximately $27,300
+* The neighbourhood *Crawford* will increase the value by approximately $23,600
+* The building type *Townhouse Inside Unit* will decrease the value by approximately $21,500
+
+![alt text](./images/37_a_lasso_coeff.png "A. Lasso Regression - Impact on Sale Price by Feature")
+
+<br/><br/>
+
+The best model for predicting house prices based on changeable characteristics (**Part B**) is **Ridge Regression**, with a CV score of 0.6990 and a test score of 0.6937.  
+According to this model, the following features have the largest impact on the sale price:
+* The highest level for *Overall Quality* will increase the value by approximately $22,100
+* The highest level for *Garage Finish* will increase the value by approximately $7,300
+* The main exterior covering *Wood Shingles* will decrease the value by approximately $7,200
+* The secondary exterior covering *Wood Shingles* will decrease the value by approximately $6,600
+* The main exterior covering *Brick Face* will increase the value by approximately $6,300
+
+![alt text](./images/43_b_ridge_coeff.png "B. Ridge Regression - Impact on Sale Price by Feature")
+
+<br/><br/>
+
+The residuals from the first set of models (Part A) represent the variance in price unexplained by the fixed characteristics.  
+To gain better predictions on the houses sale price, an additional set of models has been developed based on changeable features of the property and using the residuals from the first set of models as target.  
+The best model for predicting house prices based on changeable characteristics unexplained by the fixed ones (**Part C**) is **Lasso Regression**, with a CV score of 0.1220 and a test score of 0.1089.  
+According to this model, the following features have the largest impact on the sale price:
+* The main exterior covering *Brick Face* will increase the value by approximately $11,500
+* The electrical system *Standard Circuit Breakers & Romex* will decrease the value by approximately $4,900
+* The highest level for *Overall Quality* will increase the value by approximately $4,600
+* The highest level for *Overall Condition* will increase the value by approximately $4,000
+* The highest level for *Functional* will increase the value by approximately $2,600
+
+![alt text](./images/47_c_lasso_coeff.png "C. Lasso Regression - Impact on Sale Price by Feature")
+
+<br/><br/>
+ 
+Among the twelve regression models implemented, **Lasso Regression** in **Part A** performed best with the highest CV score of 0.7693.  
+There are substantial differences between the three set of models, and those based on **fixed characteristics** are the most robust, however their performance was quite low.
+
+![alt text](./images/51_final_regression_scores.png "Regression Score Evaluation")
+
+<br/><br/>
 
 
 
-
-
-
-defined the project as a classification problem using the median salary as the splitting point: the baseline accuracy was therefore 0.50, reflecting a perfectly balanced class distribution.  
-I defined four sets of models based on different predictors, each with three models to run: Logistic Regression, Decision Tree with GridSearchCV and Random Forest with GridSearchCV.  
-
-The first set of models only used the company state as a factor in predicting whether a job listing had a low salary (defined as below the median salary of all jobs) or a high salary (above the median). Among these models the best were the Logistic Regression and the Decision Tree which achieved a CV score of 0.5693.  
-
-In the second set of models I incorporated additional features, using a set of functions designed to extract information from the job title. The work arrangement was also added on the assumption that, unless explicitly stated, the position was on-site.
-Among the three models implemented, the best was the Random Forest which achieved a CV score of 0.7486, a significant improvement compared to previous models that were based only on location.  
-
-Instead of using a limited set of functions to extract information, I enhanced the initial models by implementing NLP (Natural Language Processing) techniques. Specifically, I used CountVectorizer on the third set and TfidfVectorizer on the fourth and final set of models to extract features from the job title.  
-
-In the third set the best model was the Random Forest which achieved a CV score of 0.8318, once again a significant improvement compared to the previous models that used a defined number of features.  
-In the last set of models Random Forest achieved a CV score of 0.8386, the highest among all models.  
-Both sets observed similar results and performed significantly better than the previous one, and the best model was the Random Forest in the fourth set with a considerable improvement (+0.34) over the baseline of 0.50.  
-
-![alt text](./images/71_d_randf_coeff_01.png "D. Random Forest - Impact on Salary by Feature - Largest")
-![alt text](./images/76_final_scores.png "Final Model Scores Evaluation")
 
 The best model achieved an accuracy of 84%, a marked improvement from the 50% accuracy of random selection, however this still resulted in incorrect predictions in 16% of cases.  
 In this scenario, it would be better to falsely predict that someone will earn less than median when in reality they will earn more, so even if the prediction is wrong, they may be happily surprised to earn more than expected.  
@@ -193,6 +230,7 @@ Additional work could be aimed at extracting relevant information, especially ab
 
 <br/><br/>
 
+
 ## Conclusion
 
 The nature of this project was primarily exploratory, so no hypothesis were made about which factor might have the greatest impact on data-related job salaries.  
@@ -205,17 +243,6 @@ The most prominent features for this model were the job titles containing engine
 
 <br/><br/>
 
-## Future Work
-
-To further improve the current work, the following steps should be taken:
-* Feature Engineering, with the creation of additional features such as company sector, company longevity and job responsibilities.
-* Using more precise location tags than the company state, possibly by extracting the ZIP code
-* Imputing values where missing, to avoid the removal of entire observations.
-* Removing outliers, after further analysis and due diligence of the plausible values.
-* Employing Gradient Boosting, XGBoost and ensemble methods, checking the effects on the model's performance.  
-
-
-<br/><br/>
 
 ## Libraries Used
 
