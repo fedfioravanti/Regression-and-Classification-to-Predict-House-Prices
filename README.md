@@ -208,8 +208,18 @@ There are substantial differences between the three set of models, and those bas
 
 <br/><br/>
 
+The `SaleCondition` feature indicates the circumstances of the house sale. These are the options in the data description:
 
+       Normal	Normal Sale
+       Abnorml	Abnormal Sale -  trade, foreclosure, short sale
+       AdjLand	Adjoining Land Purchase
+       Alloca	Allocation - two linked properties with separate deeds, typically condo with a garage unit	
+       Family	Sale between family members
+       Partial	Home was not completed when last assessed (associated with New Homes)
+       
+If it were possible to indicate which property features predict "abnormal" sales (foreclosures, short sales, etc.), the real estate company could have an advantage on the pre-auction purchase of such properties (at a very low price).  
 
+There was a strong class imbalance in the data, where approximately 93% of the sales were considered regular and only 7% were abnormal: to resolve this imbalance I undersampled the majority class which led to a 50/50 split between normal and abnormal sales.  
 After the initial model testing, Logistic Regression and Random Forest have been further explored.  
 
 The best model for determining which property feature predict an "abnormal" sale (**Part D**) is **Random Forest**, with a CV score of 0.9131 and a test score of 0.4927.  
@@ -226,22 +236,15 @@ According to this model, the following features have the largest impact on predi
 <br/><br/>
 
 
-## Limitations
-
-The main limitations of this project arise from the fact that it uses averaged salaries from ranges, which can be quite broad. It would be interesting to compare the performance of the model with precise salaries to see how much of an impact this has.  
-Another limitation of the dataset, directly related to Indeed.com, is that it did not include any information about the company size, sector, and revenue.  
-Additional work could be aimed at extracting relevant information, especially about the job responsibilities, from the job description using NLP techniques.  
-
-
-<br/><br/>
-
-
 ## Conclusion
 
-The nature of this project was primarily exploratory, so no hypothesis were made about which factor might have the greatest impact on data-related job salaries.  
+The nature of this project was primarily exploratory, so no hypothesis were made about which feature might have the greatest impact on house sale prices.  
 
-The latest Random Forest model using GridSearchCV (which implemented TfidfVectorizer to extract features) achieved an accuracy score of 0.8379 and a CV score of 0.8386.  
-The model was balanced between the two classes, had a good accuracy and indeed a very good class separation capacity.  
+Among regression models, Lasso Regression using fixed characteristics achieved the highest CV score of 0.7693.  
+Although this model is clearly not the most reliable, it is the most robust and I would suggest that fixed characteristics of the properties are the best predictors for sale price.  
+Specifically, the Northridge Heights, Northridge, Stone Brook, Crawford and Somerset neighbourhoods have a large positive impact on sale price, as well as the total internal square footage.  
+On the other hand, the Townhouse Inside Unit and Townhouse End Unit building types, the Edwards neighbourhood and an irregular shape of the property have a large negative impact on sale price.  
+Changeable characteristics of the property do not affect the sale price as much as fixed ones, however Overall Quality and Garage Finish can benefit the seller.  
 
 The most prominent features for this model were the job titles containing engineer, senior and the remote work arrangement, meaning that engineering-related jobs and higher-level positions had the greatest impact in predicting job salaries.  
 
