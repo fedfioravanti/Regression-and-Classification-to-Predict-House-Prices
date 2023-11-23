@@ -1,4 +1,4 @@
-# Web Scraping and Salary Prediction
+# Regression and Classification to Predict House Prices
 
 
 
@@ -10,13 +10,12 @@ This document explains the background, the objectives, the methodologies, the co
 <br/><br/>
 
 
-
 ## Table of Contents
 
 [Background](#Background)  
 [Objectives](#Objectives)   
 [Data Collection](#Data-Collection)  
-[Data Cleaning & Processing](#Data-Cleaning-&-Processing)  
+[Data Cleaning & Processing](#Data-Cleaning--Processing)  
 [Exploratory Data Analysis](#Exploratory-Data-Analysis)  
 [Modelling](#Modelling)  
 [Limitations](#Limitations)  
@@ -26,6 +25,7 @@ This document explains the background, the objectives, the methodologies, the co
 
 
 <br/><br/>
+
 
 ## Background
 
@@ -40,6 +40,7 @@ This imaginary company is still small, and although investment is substantial th
 
 
 <br/><br/>
+
 
 ## Objectives
 
@@ -209,14 +210,18 @@ There are substantial differences between the three set of models, and those bas
 
 
 
+After the initial model testing, Logistic Regression and Random Forest have been further explored.  
 
-The best model achieved an accuracy of 84%, a marked improvement from the 50% accuracy of random selection, however this still resulted in incorrect predictions in 16% of cases.  
-In this scenario, it would be better to falsely predict that someone will earn less than median when in reality they will earn more, so even if the prediction is wrong, they may be happily surprised to earn more than expected.  
-To change our model's predictions so that we do not incorrectly tell someone they will earn more than the median, we had to raise the threshold for predicting a high salary.  
-We set the threshold to 85% to reduce the number of false positives, even though this slightly decreased the model's accuracy.  
-The model achieved a precision of 96% for high salaries, but it was clearly overpredicting low salaries.  
+The best model for determining which property feature predict an "abnormal" sale (**Part D**) is **Random Forest**, with a CV score of 0.9131 and a test score of 0.4927.  
+Although the test score is quite low, the model should be more accurate than using the original data, which would overpredict a normal sale since most of the data fell into this category.  
+According to this model, the following features have the largest impact on predicting an "abnormal" sale:
+* YearRemodAdd
+* Age
+* GarageArea
+* FloorAreaRatio
+* SalePrice
 
-![alt text](./images/77_class_metrics_threshold.png "Classification Metrics at Different Thresholds")
+![alt text](./images/54_d_randf_coeff.png "D. Random Forest - Impact on Sale Condition by Feature - Largest")
 
 <br/><br/>
 
