@@ -246,8 +246,9 @@ Specifically, the Northridge Heights, Northridge, Stone Brook, Crawford and Some
 On the other hand, the Townhouse Inside Unit and Townhouse End Unit building types, the Edwards neighbourhood and an irregular shape of the property have a large negative impact on sale price.  
 Changeable characteristics of the property do not affect the sale price as much as fixed ones, however Overall Quality and Garage Finish can benefit the seller.  
 
-The most prominent features for this model were the job titles containing engineer, senior and the remote work arrangement, meaning that engineering-related jobs and higher-level positions had the greatest impact in predicting job salaries.  
+Although it could be difficult to predict an abnormal sale, the most prominent features for this part are the year of remodeling, the age of the property, the garage area and the floor area ratio.  
 
+Overall, the company can make reasonably accurate predictions about house sale prices based on fixed characteristics like location and size. Additionally, by investing in certain home improvements before selling, they can significantly increase their profit margins.  
 
 <br/><br/>
 
@@ -267,6 +268,7 @@ The most prominent features for this model were the job titles containing engine
 <br/><br/>
 
 ## Contact
+
 Interested in discussing my project further?  
 Please feel free to contact me on [LinkedIn](https://www.linkedin.com/in/fedfioravanti/).  
 
